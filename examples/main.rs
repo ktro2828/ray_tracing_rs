@@ -1,9 +1,10 @@
-use ray_tracing_rs::camera::Camera;
-use ray_tracing_rs::color::Color;
-use ray_tracing_rs::object::material::{Dilectric, Lambertian, Material, Metal};
-use ray_tracing_rs::object::sphere::Sphere;
-use ray_tracing_rs::utils::random;
-use ray_tracing_rs::vec3::Vec3;
+use ray_tracing::camera::Camera;
+use ray_tracing::color::Color;
+// use ray_tracing::object::material::{Dilectric, Lambertian, Metal};
+use ray_tracing::object::material::Lambertian;
+use ray_tracing::object::sphere::Sphere;
+use ray_tracing::utils::random;
+use ray_tracing::vec3::Vec3;
 
 fn main() {
     let mut world: Vec<Sphere<_>> = Vec::new();

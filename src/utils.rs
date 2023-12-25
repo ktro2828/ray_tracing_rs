@@ -12,6 +12,8 @@ use rand::{
 /// # Example
 /// 
 /// ```
+/// use ray_tracing::utils::random;
+/// 
 /// let v = random::<f64>();
 /// ```
 pub fn random<T>() -> T
