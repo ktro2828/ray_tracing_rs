@@ -1,10 +1,8 @@
 pub mod params;
 
 use crate::color::Color;
-use crate::hittable::sphere::Sphere;
-use crate::hittable::{HitRecord, Hittable};
+use crate::hittable::{Hittable, World, HitRecord};
 use crate::interval::Interval;
-use crate::material::Material;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
 
@@ -22,24 +20,16 @@ impl Camera {
     }
 
     /// Render world
-    ///
-    /// TODO: define world as struct not Vec of Sphere
-    pub fn render<T>(&self, world: &Vec<Sphere<T>>)
-    where
-        T: Material,
-    {
+    pub fn render(&self, world: &World) {
         println!("P3\n{} {}\n255\n", self.fov.width, self.fov.height);
 
         let samples_per_pixel = 10;
         for j in 0..=self.fov.height {
             for i in 0..self.fov.width {
                 let mut px_color = Color::new(0.0, 0.0, 0.0);
-                // TODO: define world as struct not Vec of Sphere
                 for _sample in 0..samples_per_pixel {
                     let ray = self.get_ray(i, j);
-                    world.iter().for_each(|obj| {
-                        px_color += self.ray_color(&ray, &self.fov.max_depth, obj);
-                    })
+                    px_color += self.ray_color(&ray, &self.fov.max_depth, world);
                 }
                 px_color.write_color(&samples_per_pixel);
             }
@@ -124,18 +114,15 @@ impl Camera {
             + self.defocus.defocus_disk_v * *p.y()
     }
 
-    fn ray_color<T>(&self, ray: &Ray, depth: &u32, object: &Sphere<T>) -> Color
-    where
-        T: Material,
-    {
+    fn ray_color(&self, ray: &Ray, depth: &u32, world: &World) -> Color {
         if *depth <= 0 {
             Color::new(0.0, 0.0, 0.0)
         } else {
-            let record = &HitRecord::new(&object.material);
-            if object.hit(ray, &Interval::from(0.001, f64::INFINITY)) {
-                let scattered = record.material.scatter(&ray, &record);
-                let attenuation = record.material.get_albedo();
-                attenuation * self.ray_color(&scattered, depth, object)
+            let mut record = HitRecord::new();
+            if world.hit(ray, &Interval::from(0.001, f64::INFINITY), &mut record) {
+                let scattered = Ray::from(Vec3::zeros(), Vec3::ones());
+                let attenuation = Color::new(0.0, 0.0, 0.0);
+                attenuation * self.ray_color(&scattered, depth, world)
             } else {
                 Color::new(0.0, 0.0, 0.0)
             }
