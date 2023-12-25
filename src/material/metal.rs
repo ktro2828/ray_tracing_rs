@@ -12,7 +12,7 @@ pub struct Metal {
 }
 
 impl Material for Metal {
-    fn scatter(&self, in_ray: &Ray, record: &HitRecord<Self>) -> Ray {
+    fn scatter(&self, in_ray: &Ray, record: &HitRecord) -> Ray {
         let reflected = reflect(in_ray.direction().as_unit(), record.normal);
         Ray::from(record.p, reflected + Vec3::rand_unit() * self.fuzz)
     }

@@ -10,7 +10,7 @@ pub struct Dilectric {
 }
 
 impl Material for Dilectric {
-    fn scatter(&self, in_ray: &Ray, record: &HitRecord<Self>) -> Ray {
+    fn scatter(&self, in_ray: &Ray, record: &HitRecord) -> Ray {
         let refraction_ratio = if record.front_face {
             1.0 / self.ir
         } else {

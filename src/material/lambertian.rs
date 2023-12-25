@@ -10,7 +10,7 @@ pub struct Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, _in_ray: &Ray, record: &HitRecord<Self>) -> Ray {
+    fn scatter(&self, _in_ray: &Ray, record: &HitRecord) -> Ray {
         let mut scatter_dir = record.normal + Vec3::rand_unit();
 
         if scatter_dir.is_close(0.0) {

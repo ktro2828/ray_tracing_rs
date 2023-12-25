@@ -15,7 +15,7 @@ where
         Color::new(0.0, 0.0, 0.0)
     }
 
-    fn scatter(&self, in_ray: &Ray, record: &HitRecord<Self>) -> Ray;
+    fn scatter(&self, in_ray: &Ray, record: &HitRecord) -> Ray;
 
     fn reflectance(&self, cosine: &f64, ref_idx: &f64) -> f64 {
         let r0 = ((1.0 - ref_idx) / (1.0 + ref_idx)).powi(2);
