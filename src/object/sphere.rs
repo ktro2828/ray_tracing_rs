@@ -5,14 +5,11 @@ use crate::interval::Interval;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
 
-#[derive(Debug)]
-pub struct Sphere<T>
-where
-    T: Material,
-{
-    center: Vec3,
-    radius: f64,
-    material: T,
+#[derive(Debug, Copy, Clone)]
+pub struct Sphere<T> {
+    pub center: Vec3,
+    pub radius: f64,
+    pub material: T,
 }
 
 impl<T> Sphere<T>
@@ -32,6 +29,7 @@ impl<T> Hittable<T> for Sphere<T>
 where
     T: Material,
 {
+
     fn hit(&self, ray: &Ray, ray_t: &Interval) -> bool {
         let origin = *ray.origin() - self.center;
         let a = ray.direction().norm_squared();

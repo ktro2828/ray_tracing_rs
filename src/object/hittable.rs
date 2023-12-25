@@ -1,11 +1,10 @@
 use super::material::Material;
-use crate::{interval::Interval, ray::Ray, vec3::Vec3};
+use crate::interval::Interval;
+use crate::ray::Ray;
+use crate::vec3::Vec3;
 
 #[derive(Debug)]
-pub struct HitRecord<T>
-where
-    T: Material,
-{
+pub struct HitRecord<T> {
     pub p: Vec3,
     pub normal: Vec3,
     pub material: T,
@@ -38,7 +37,7 @@ where
 
 pub trait Hittable<T>
 where
-    T: Material,
+    Self: Sized + Copy + Clone,
 {
     fn hit(&self, ray: &Ray, ray_t: &Interval) -> bool;
     fn get_record(&self, ray: &Ray, ray_t: &Interval) -> Option<HitRecord<T>>;

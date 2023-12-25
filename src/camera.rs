@@ -1,8 +1,8 @@
-use std::usize;
-
 use crate::color::Color;
 use crate::interval::Interval;
 use crate::object::hittable::{HitRecord, Hittable};
+use crate::object::material::Material;
+use crate::object::sphere::Sphere;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
 
@@ -85,6 +85,31 @@ impl Camera {
         Camera::init()
     }
 
+    /// Render world
+    /// 
+    /// TODO: define world as struct not Vec of Sphere
+    pub fn render<T>(&self, world: &Vec<Sphere<T>>)
+    where
+        T: Material,
+    {
+        println!("P3\n{} {}\n255\n", self.fov.width, self.fov.height);
+
+        let samples_per_pixel = 10;
+        for j in 0..=self.fov.height {
+            for i in 0..self.fov.width {
+                let mut px_color = Color::new(0.0, 0.0, 0.0);
+                // TODO: define world as struct not Vec of Sphere
+                for _sample in 0..samples_per_pixel {
+                    let ray = self.get_ray(i, j);
+                    world.iter().for_each(|obj| {
+                        px_color += self.ray_color(&ray, &self.fov.max_depth, obj);
+                    })
+                }
+                px_color.write_color(&samples_per_pixel);
+            }
+        }
+    }
+
     fn init() -> Self {
         let mut fov = FOVParams::new();
         let mut pixel = PixelParams::new();
@@ -126,9 +151,9 @@ impl Camera {
         }
     }
 
-    fn get_ray(&self, i: &usize, j: &usize) -> Ray {
-        let i_ = *i as f64;
-        let j_ = *j as f64;
+    fn get_ray(&self, i: u32, j: u32) -> Ray {
+        let i_ = i as f64;
+        let j_ = j as f64;
 
         let pixel_center = self.pixel.pixel00_loc
             + (self.pixel.pixel_delta_u * i_)
@@ -163,12 +188,21 @@ impl Camera {
             + self.defocus.defocus_disk_v * *p.y()
     }
 
-    // fn ray_color(ray: &Ray, depth: &usize, world: &dyn Hittable) -> Color {
-    //     if *depth <= 0 {
-    //         Color::new(0.0, 0.0, 0.0)
-    //     } else {
-    //         let record = &HitRecord::new();
-    //         if (world.hit(ray, &Interval::from(0.001, f64::INFINITY), record)) {}
-    //     }
-    // }
+    fn ray_color<T>(&self, ray: &Ray, depth: &u32, object: &Sphere<T>) -> Color
+    where
+        T: Material,
+    {
+        if *depth <= 0 {
+            Color::new(0.0, 0.0, 0.0)
+        } else {
+            let record = &HitRecord::new(&object.material);
+            if object.hit(ray, &Interval::from(0.001, f64::INFINITY)) {
+                let scattered = record.material.scatter(&ray, &record);
+                let attenuation = record.material.get_albedo();
+                attenuation * self.ray_color(&scattered, depth, object)
+            } else {
+                Color::new(0.0, 0.0, 0.0)
+            }
+        }
+    }
 }
