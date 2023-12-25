@@ -1,8 +1,7 @@
 use ray_tracing::camera::Camera;
 use ray_tracing::color::Color;
-// use ray_tracing::object::material::{Dilectric, Lambertian, Metal};
-use ray_tracing::object::material::Lambertian;
-use ray_tracing::object::sphere::Sphere;
+use ray_tracing::hittable::sphere::Sphere;
+use ray_tracing::material::lambertian::Lambertian;
 use ray_tracing::utils::random;
 use ray_tracing::vec3::Vec3;
 

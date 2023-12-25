@@ -1,7 +1,7 @@
-use super::hittable::HitRecord;
-use super::hittable::Hittable;
-use super::material::Material;
+use crate::hittable::HitRecord;
+use crate::hittable::Hittable;
 use crate::interval::Interval;
+use crate::material::Material;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
 
@@ -29,7 +29,6 @@ impl<T> Hittable<T> for Sphere<T>
 where
     T: Material,
 {
-
     fn hit(&self, ray: &Ray, ray_t: &Interval) -> bool {
         let origin = *ray.origin() - self.center;
         let a = ray.direction().norm_squared();

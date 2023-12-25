@@ -29,7 +29,7 @@ impl Color {
         linear_component.sqrt()
     }
 
-    pub fn write_color(&self, samples_per_pixel: &usize) {
+    pub fn write_color(&self, samples_per_pixel: &u32) {
         // divide the color by the number os samples
         // apply a linear to gamma transform for gamma 2
         let scale = 1.0 / *samples_per_pixel as f64;

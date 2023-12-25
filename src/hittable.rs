@@ -1,5 +1,7 @@
-use super::material::Material;
+pub mod sphere;
+
 use crate::interval::Interval;
+use crate::material::Material;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
 
