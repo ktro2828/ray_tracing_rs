@@ -1,7 +1,7 @@
 pub mod params;
 
 use crate::color::Color;
-use crate::hittable::{Hittable, World, HitRecord};
+use crate::hittable::{HitRecord, Hittable, World};
 use crate::interval::Interval;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
@@ -27,9 +27,9 @@ impl Camera {
         for j in 0..=self.fov.height {
             for i in 0..self.fov.width {
                 let mut px_color = Color::new(0.0, 0.0, 0.0);
-                for _sample in 0..samples_per_pixel {
+                for _ in 0..samples_per_pixel {
                     let ray = self.get_ray(i, j);
-                    px_color += self.ray_color(&ray, &self.fov.max_depth, world);
+                    px_color += self.get_ray_color(&ray, &self.fov.max_depth, world);
                 }
                 px_color.write_color(&samples_per_pixel);
             }
@@ -96,12 +96,14 @@ impl Camera {
         Ray::from(ray_origin, ray_direction)
     }
 
+    /// Returns a random point in the square surrounding a pixel at the origin.
     fn pixel_sample_square(&self) -> Vec3 {
         let px = Vec3::rand() - 0.5;
         let py = Vec3::rand() + 0.5;
         px * self.pixel.pixel_delta_u + py * self.pixel.pixel_delta_v
     }
 
+    /// Returns a random point in the camera defocus disk.
     fn pixel_sample_disk(&self, radius: f64) -> Vec3 {
         let p = Vec3::rand_unit() * radius;
         self.pixel.pixel_delta_u * *p.x() + self.pixel.pixel_delta_v * *p.y()
@@ -114,7 +116,7 @@ impl Camera {
             + self.defocus.defocus_disk_v * *p.y()
     }
 
-    fn ray_color(&self, ray: &Ray, depth: &u32, world: &World) -> Color {
+    fn get_ray_color(&self, ray: &Ray, depth: &u32, world: &World) -> Color {
         if *depth <= 0 {
             Color::new(0.0, 0.0, 0.0)
         } else {
@@ -122,7 +124,7 @@ impl Camera {
             if world.hit(ray, &Interval::from(0.001, f64::INFINITY), &mut record) {
                 let scattered = Ray::from(Vec3::zeros(), Vec3::ones());
                 let attenuation = Color::new(0.0, 0.0, 0.0);
-                attenuation * self.ray_color(&scattered, depth, world)
+                attenuation * self.get_ray_color(&scattered, &(*depth - 1), world)
             } else {
                 Color::new(0.0, 0.0, 0.0)
             }

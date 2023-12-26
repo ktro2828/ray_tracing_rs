@@ -3,9 +3,9 @@ use crate::utils::random;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color{
-    r: f64,
-    g: f64,
-    b: f64,
+    pub r: f64,
+    pub g: f64,
+    pub b: f64,
 }
 
 impl Color {
@@ -74,5 +74,21 @@ impl std::ops::MulAssign<Color> for Color {
         self.r *= rhs.r;
         self.g *= rhs.g;
         self.b *= rhs.b;
+    }
+}
+
+impl std::ops::Mul<f64> for Color {
+    type Output = Color;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        Color::new(self.r * rhs, self.g * rhs, self.b * rhs)
+    }
+}
+
+impl std::ops::MulAssign<f64> for Color {
+    fn mul_assign(&mut self, rhs: f64) {
+        self.r *= rhs;
+        self.g *= rhs;
+        self.b *= rhs; 
     }
 }
