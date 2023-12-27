@@ -7,6 +7,7 @@ use raytrs::geometry::Vec3;
 use raytrs::material::Dilectric;
 use raytrs::material::Lambertian;
 use raytrs::material::Metal;
+use raytrs::render::RenderMode;
 use raytrs::render::Renderer;
 use raytrs::render::Scene;
 use raytrs::shape::Sphere;
@@ -55,8 +56,11 @@ fn main() {
     );
     scene.push(Box::new(sphere1));
 
-    let ppm_str = scene.render();
+    let ppm_basic_str = scene.render(RenderMode::BASIC);
+    let mut out_basic_file = File::create("output_basic.ppm").unwrap();
+    write!(out_basic_file, "{}", ppm_basic_str).unwrap();
 
-    let mut out_file = File::create("output.ppm").unwrap();
-    write!(out_file, "{}", ppm_str).unwrap()
+    let ppm_aa_str = scene.render(RenderMode::AA);
+    let mut out_aa_file = File::create("output_aa.ppm").unwrap();
+    write!(out_aa_file, "{}", ppm_aa_str).unwrap()
 }

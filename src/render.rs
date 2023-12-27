@@ -7,13 +7,36 @@ use crate::{
     shape::{Shape, ShapeList},
 };
 
+// TODO: allow to set as parameter.
 const IMAGE_WIDTH: u32 = 300;
 const IMAGE_HEIGHT: u32 = 200;
+const SAMPLES_PER_PIXEL: usize = 10;
+
+pub enum RenderMode {
+    BASIC,
+    AA,
+}
 
 pub trait Renderer {
     fn camera(&self) -> Camera;
     fn trace(&self, ray: Ray) -> Color;
-    fn render(&self) -> String;
+
+    /// Render scene with basic mode.
+    fn render_basic(&self) -> String;
+
+    /// Render scene with Anti Aliasing mode.
+    ///
+    /// 1. Sampling colors at each pixel around it.
+    /// 2. Meaning color.
+    fn render_aa(&self) -> String;
+
+    /// Render scene with specified rendering mode.
+    fn render(&self, mode: RenderMode) -> String {
+        match mode {
+            RenderMode::BASIC => self.render_basic(),
+            RenderMode::AA => self.render_aa(),
+        }
+    }
 
     fn width(&self) -> u32 {
         IMAGE_WIDTH
@@ -64,7 +87,7 @@ impl Renderer for Scene {
         }
     }
 
-    fn render(&self) -> String {
+    fn render_basic(&self) -> String {
         let mut ppm_str = format!("P3\n{} {}\n255\n", self.width(), self.height());
 
         for y in 0..self.height() {
@@ -74,6 +97,28 @@ impl Renderer for Scene {
                 let ray = self.camera().ray(u, v);
                 let color = self.trace(ray);
                 ppm_str += &color.to_string();
+            }
+        }
+        ppm_str
+    }
+
+    fn render_aa(&self) -> String {
+        let mut ppm_str = format!("P3\n{} {}\n255\n", self.width(), self.height());
+
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let mut px_color =
+                    (0..SAMPLES_PER_PIXEL)
+                        .into_iter()
+                        .fold(Color::new(0.0, 0.0, 0.0), |acc, _| {
+                            let r = Vec3::rand();
+                            let u = (x as f64 + r.x()) / (self.width() - 1) as f64;
+                            let v = (y as f64 + r.y()) / (self.height() - 1) as f64;
+                            let ray = self.camera().ray(u, v);
+                            acc + self.trace(ray)
+                        });
+                px_color /= SAMPLES_PER_PIXEL as f64;
+                ppm_str += &px_color.to_string();
             }
         }
         ppm_str

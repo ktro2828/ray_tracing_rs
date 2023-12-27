@@ -146,6 +146,38 @@ impl std::ops::MulAssign<f64> for Color {
     }
 }
 
+impl std::ops::Div<Color> for Color {
+    type Output = Color;
+
+    fn div(self, rhs: Color) -> Self::Output {
+        Color::new(self.r / rhs.r, self.g / rhs.g, self.b / rhs.b)
+    }
+}
+
+impl std::ops::Div<f64> for Color {
+    type Output = Color;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Color::new(self.r / rhs, self.g / rhs, self.b / rhs)
+    }
+}
+
+impl std::ops::DivAssign<Color> for Color {
+    fn div_assign(&mut self, rhs: Color) {
+        self.r /= rhs.r;
+        self.g /= rhs.g;
+        self.b /= rhs.b;
+    }
+}
+
+impl std::ops::DivAssign<f64> for Color {
+    fn div_assign(&mut self, rhs: f64) {
+        self.r /= rhs;
+        self.g /= rhs;
+        self.b /= rhs;
+    }
+}
+
 impl std::string::ToString for Color {
     fn to_string(&self) -> String {
         let ir = (self.r * 255.99) as i32;
