@@ -6,14 +6,27 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
+    /// Returns Vec3 built from specified values.
+    ///
+    /// # Examples
+    /// ```
+    /// use raytrs::geometry::Vec3;
+    ///
+    /// let v = Vec3::new(1.0, 2.0, 3.0);
+    /// ```
+    pub fn new(e0: f64, e1: f64, e2: f64) -> Self {
+        let e = [e0, e1, e2];
+        Vec3 { e }
+    }
+
     /// Returns Vec3 filled by 0.0.
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::zeros();
-    /// assert_eq!(v, Vec3::from(0.0, 0.0, 0.0));
+    /// assert_eq!(v, Vec3::new(0.0, 0.0, 0.0));
     /// ```
     pub fn zeros() -> Self {
         let e = [0.0, 0.0, 0.0];
@@ -24,26 +37,13 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::ones();
-    /// assert_eq!(v, Vec3::from(1.0, 1.0, 1.0));
+    /// assert_eq!(v, Vec3::new(1.0, 1.0, 1.0));
     /// ```
     pub fn ones() -> Self {
         let e = [1.0, 1.0, 1.0];
-        Vec3 { e }
-    }
-
-    /// Returns Vec3 built from specified values.
-    ///
-    /// # Examples
-    /// ```
-    /// use raytrs::vec3::Vec3;
-    ///
-    /// let v = Vec3::from(1.0, 2.0, 3.0);
-    /// ```
-    pub fn from(e0: f64, e1: f64, e2: f64) -> Self {
-        let e = [e0, e1, e2];
         Vec3 { e }
     }
 
@@ -51,7 +51,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::rand();
     /// ```
@@ -65,7 +65,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.x(), &0.0);
@@ -78,7 +78,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.y(), &0.0);
@@ -91,7 +91,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.z(), &0.0);
@@ -104,7 +104,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// let v2 = Vec3::ones();
@@ -119,23 +119,31 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// let v2 = Vec3::ones();
     /// let c = v1.cross(v2);
-    /// assert_eq!(c, Vec3::from(0.0, 0.0, 0.0));
+    /// assert_eq!(c, Vec3::new(0.0, 0.0, 0.0));
     /// ```
     pub fn cross(&self, rhs: Vec3) -> Vec3 {
         let e = _cross(&self.e, &rhs.e);
         Vec3 { e }
     }
 
+    pub fn reflect(&self, rhs: Vec3) -> Vec3 {
+        reflect(*self, rhs)
+    }
+
+    pub fn refract(&self, rhs: Vec3, ratio: f64) -> Option<Vec3> {
+        refract(*self, rhs, ratio)
+    }
+
     /// Returns norm value.
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let n = v.norm();
@@ -149,7 +157,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let n = v.norm_squared();
@@ -163,11 +171,11 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let u = v.as_unit();
-    /// assert_eq!(u, Vec3::from(1.0 / 1.7320508075688772, 1.0 / 1.7320508075688772, 1.0 / 1.7320508075688772));
+    /// assert_eq!(u, Vec3::new(1.0 / 1.7320508075688772, 1.0 / 1.7320508075688772, 1.0 / 1.7320508075688772));
     /// ```
     pub fn as_unit(&self) -> Self {
         *self / self.norm()
@@ -177,7 +185,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::rand_unit();
     /// ```
@@ -189,7 +197,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use raytrs::vec3::Vec3;
+    /// use raytrs::geometry::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// assert!(v1.is_close(1.0));
@@ -206,18 +214,18 @@ impl Vec3 {
 ///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
+/// use raytrs::geometry::Vec3;
 ///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
 /// let a = v1 + v2;
-/// assert_eq!(a, Vec3::from(2.0, 2.0, 2.0));
+/// assert_eq!(a, Vec3::new(2.0, 2.0, 2.0));
 /// ```
 impl std::ops::Add<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn add(self, rhs: Vec3) -> Self::Output {
-        Vec3::from(self.x() + rhs.x(), self.y() + rhs.y(), self.z() + rhs.z())
+        Vec3::new(self.x() + rhs.x(), self.y() + rhs.y(), self.z() + rhs.z())
     }
 }
 
@@ -225,17 +233,17 @@ impl std::ops::Add<Vec3> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
+/// use raytrs::geometry::Vec3;
 ///
 /// let v = Vec3::ones();
 /// let a = v + 1.0;
-/// assert_eq!(a, Vec3::from(2.0, 2.0, 2.0));
+/// assert_eq!(a, Vec3::new(2.0, 2.0, 2.0));
 /// ```
 impl std::ops::Add<f64> for Vec3 {
     type Output = Vec3;
 
     fn add(self, rhs: f64) -> Self::Output {
-        Vec3::from(self.x() + rhs, self.y() + rhs, self.z() + rhs)
+        Vec3::new(self.x() + rhs, self.y() + rhs, self.z() + rhs)
     }
 }
 
@@ -243,12 +251,12 @@ impl std::ops::Add<f64> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
+/// use raytrs::geometry::Vec3;
 ///
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
 /// v1 += v2;
-/// assert_eq!(v1, Vec3::from(2.0, 2.0, 2.0));
+/// assert_eq!(v1, Vec3::new(2.0, 2.0, 2.0));
 /// ```
 impl std::ops::AddAssign<Vec3> for Vec3 {
     fn add_assign(&mut self, rhs: Vec3) {
@@ -262,11 +270,11 @@ impl std::ops::AddAssign<Vec3> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
+/// use raytrs::geometry::Vec3;
 ///
 /// let mut v = Vec3::ones();
 /// v += 1.0;
-/// assert_eq!(v, Vec3::from(2.0, 2.0, 2.0));
+/// assert_eq!(v, Vec3::new(2.0, 2.0, 2.0));
 /// ```
 impl std::ops::AddAssign<f64> for Vec3 {
     fn add_assign(&mut self, rhs: f64) {
@@ -280,7 +288,7 @@ impl std::ops::AddAssign<f64> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
+/// use raytrs::geometry::Vec3;
 ///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -291,16 +299,16 @@ impl std::ops::Sub<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn sub(self, rhs: Vec3) -> Self::Output {
-        Vec3::from(self.x() - rhs.x(), self.y() - rhs.y(), self.z() - rhs.z())
+        Vec3::new(self.x() - rhs.x(), self.y() - rhs.y(), self.z() - rhs.z())
     }
 }
 
 /// The subtraction operator `Vec3 - f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let v = Vec3::ones();
 /// let a = v - 1.0;
 /// assert_eq!(a, Vec3::zeros());
@@ -309,16 +317,16 @@ impl std::ops::Sub<f64> for Vec3 {
     type Output = Vec3;
 
     fn sub(self, rhs: f64) -> Self::Output {
-        Vec3::from(self.x() - rhs, self.y() - rhs, self.z() - rhs)
+        Vec3::new(self.x() - rhs, self.y() - rhs, self.z() - rhs)
     }
 }
 
 /// The subtraction assignment operator `-= Vec3`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
 /// v1 -= v2;
@@ -333,11 +341,11 @@ impl std::ops::SubAssign<Vec3> for Vec3 {
 }
 
 /// The subtraction assignment operator `-= f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v = Vec3::ones();
 /// v -= 1.0;
 /// assert_eq!(v, Vec3::zeros());
@@ -351,11 +359,11 @@ impl std::ops::SubAssign<f64> for Vec3 {
 }
 
 /// The multiplication operator `Vec3 * Vec3`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::zeros();
 /// let a = v1 * v2;
@@ -365,16 +373,16 @@ impl std::ops::Mul<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: Vec3) -> Self::Output {
-        Vec3::from(self.x() * rhs.x(), self.y() * rhs.y(), self.z() * rhs.z())
+        Vec3::new(self.x() * rhs.x(), self.y() * rhs.y(), self.z() * rhs.z())
     }
 }
 
 /// The multiplication operator `Vec3 * f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let v = Vec3::ones();
 /// let a = v * 0.0;
 /// assert_eq!(a, Vec3::zeros());
@@ -383,16 +391,24 @@ impl std::ops::Mul<f64> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: f64) -> Self::Output {
-        Vec3::from(self.x() * rhs, self.y() * rhs, self.z() * rhs)
+        Vec3::new(self.x() * rhs, self.y() * rhs, self.z() * rhs)
+    }
+}
+
+impl std::ops::Mul<Vec3> for f64 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        Vec3::new(self * rhs.x(), self * rhs.y(), self * rhs.z())
     }
 }
 
 /// The multiplication assignment operator `*= Vec3`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::zeros();
 /// v1 *= v2;
@@ -407,11 +423,11 @@ impl std::ops::MulAssign<Vec3> for Vec3 {
 }
 
 /// The multiplication assignment operator `*= f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v = Vec3::ones();
 /// v *= 0.0;
 /// assert_eq!(v, Vec3::zeros());
@@ -425,11 +441,11 @@ impl std::ops::MulAssign<f64> for Vec3 {
 }
 
 /// The division operator `Vec3 / Vec3`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
 /// let a = v1 / v2;
@@ -439,16 +455,16 @@ impl std::ops::Div<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: Vec3) -> Self::Output {
-        Vec3::from(self.x() / rhs.x(), self.y() / rhs.y(), self.z() / rhs.z())
+        Vec3::new(self.x() / rhs.x(), self.y() / rhs.y(), self.z() / rhs.z())
     }
 }
 
 /// The division operator `Vec3 / f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let v = Vec3::ones();
 /// let a = v / 1.0;
 /// assert_eq!(v, Vec3::ones());
@@ -457,16 +473,16 @@ impl std::ops::Div<f64> for Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: f64) -> Self::Output {
-        Vec3::from(self.x() / rhs, self.y() / rhs, self.z() / rhs)
+        Vec3::new(self.x() / rhs, self.y() / rhs, self.z() / rhs)
     }
 }
 
 /// The division assignment operator `/= Vec3`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
 /// v1 /= v2;
@@ -481,11 +497,11 @@ impl std::ops::DivAssign<Vec3> for Vec3 {
 }
 
 /// The division assignment operator `/= f64`.
-/// 
+///
 /// # Example
 /// ```
-/// use raytrs::vec3::Vec3;
-/// 
+/// use raytrs::geometry::Vec3;
+///
 /// let mut v = Vec3::ones();
 /// v /= 1.0;
 /// assert_eq!(v, Vec3::ones());
@@ -495,6 +511,13 @@ impl std::ops::DivAssign<f64> for Vec3 {
         self.e[0] /= rhs;
         self.e[1] /= rhs;
         self.e[2] /= rhs;
+    }
+}
+
+impl std::ops::Neg for Vec3 {
+    type Output = Vec3;
+    fn neg(self) -> Self::Output {
+        Vec3::new(-self.e[0], -self.e[1], -self.e[2])
     }
 }
 
@@ -510,11 +533,15 @@ pub fn reflect(v1: Vec3, v2: Vec3) -> Vec3 {
     v1 - (v2 * dot(v1, v2) * 2.0)
 }
 
-pub fn refract(v1: Vec3, v2: Vec3, ratio: f64) -> Vec3 {
-    let cos_theta = dot(v1 * -1.0, v2).min(1.0);
-    let r_out_perp = (v1 + (v2 * cos_theta)) * ratio;
-    let r_out_parallel = v2 * -(1.0 - r_out_perp.norm_squared()).abs().sqrt();
-    r_out_perp + r_out_parallel
+pub fn refract(v1: Vec3, v2: Vec3, ratio: f64) -> Option<Vec3> {
+    let uv = v1.as_unit();
+    let dt = uv.dot(v2);
+    let d = 1.0 - ratio.powi(2) * (1.0 - dt.powi(2));
+    if d > 0.0 {
+        Some(-ratio * (uv - v2 * dt) - v2 * d.sqrt())
+    } else {
+        None
+    }
 }
 
 fn _dot(v1: &[f64; 3], v2: &[f64; 3]) -> f64 {

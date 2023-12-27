@@ -1,4 +1,4 @@
-use crate::vec3::Vec3;
+use crate::geometry::Vec3;
 
 pub struct FOVParams {
     pub width: u32,
@@ -23,8 +23,8 @@ impl FOVParams {
             v_fov: 90.0,
             focus_distance: 0.0,
             center: Vec3::zeros(),
-            v_up: Vec3::from(0.0, 1.0, 0.0),
-            look_from: Vec3::from(0.0, 0.0, -1.0),
+            v_up: Vec3::new(0.0, 1.0, 0.0),
+            look_from: Vec3::new(0.0, 0.0, -1.0),
             look_at: Vec3::zeros(),
         }
     }

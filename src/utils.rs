@@ -6,14 +6,13 @@ use rand::{
     thread_rng,
 };
 
-
 /// Generate a random value.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```
 /// use raytrs::utils::random;
-/// 
+///
 /// let v = random::<f64>();
 /// ```
 pub fn random<T>() -> T
@@ -25,7 +24,7 @@ where
 }
 
 /// Generate a random value in specified range.
-/// 
+///
 /// # Example
 pub fn random_range<T, R>(range: R) -> T
 where

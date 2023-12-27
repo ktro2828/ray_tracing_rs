@@ -3,6 +3,10 @@
         "Defocus",
         "Dilectric",
         "Lambertian",
-        "raytrs"
+        "lerp",
+        "lookat",
+        "lookfrom",
+        "raytrs",
+        "vfov"
     ]
 }

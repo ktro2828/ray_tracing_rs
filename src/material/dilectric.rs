@@ -1,37 +1,35 @@
-use crate::hittable::HitRecord;
+use crate::color::Color;
 use crate::material::Material;
 use crate::ray::Ray;
-use crate::utils::random;
-use crate::vec3::{dot, reflect, refract};
+use crate::shape::HitInfo;
 
-#[derive(Debug, Clone, Copy)]
+use super::scatter::ScatterInfo;
+
 pub struct Dilectric {
     pub ir: f64,
 }
 
 impl Material for Dilectric {
-    fn scatter(&self, in_ray: &Ray, record: &HitRecord) -> Ray {
-        let refraction_ratio = if record.front_face {
-            1.0 / self.ir
-        } else {
-            self.ir
-        };
-
-        let unit_dir = in_ray.direction().as_unit();
-        let cos_theta = dot(unit_dir * -1.0, record.normal).min(1.0);
-        let sin_theta = (1.0 - cos_theta.powi(2)).sqrt();
-
-        let cannot_refract = refraction_ratio * sin_theta > 1.0;
-
-        let direction =
-            if cannot_refract && self.reflectance(&cos_theta, &refraction_ratio) > random() {
-                reflect(unit_dir, record.normal)
+    fn scatter(&self, ray: &Ray, info: &HitInfo) -> Option<ScatterInfo> {
+        let reflected = ray.direction().reflect(info.n);
+        let (outward_normal, ni_over_nt) = {
+            if ray.direction().dot(info.n) > 0.0 {
+                (-info.n, self.ir)
             } else {
-                refract(unit_dir, record.normal, refraction_ratio)
-            };
-
-        let scattered = Ray::from(record.p, direction);
-        scattered
+                (info.n, self.ir.recip())
+            }
+        };
+        if let Some(refracted) = (-ray.direction).refract(outward_normal, ni_over_nt) {
+            Some(ScatterInfo::new(
+                Ray::new(info.p, refracted),
+                Color::new(1.0, 1.0, 1.0),
+            ))
+        } else {
+            Some(ScatterInfo::new(
+                Ray::new(info.p, reflected),
+                Color::new(1.0, 1.0, 1.0),
+            ))
+        }
     }
 }
 

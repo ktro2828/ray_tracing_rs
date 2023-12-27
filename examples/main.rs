@@ -1,25 +1,32 @@
-use raytrs::camera::Camera;
+use std::fs::File;
+use std::io::Write;
+use std::sync::Arc;
+
 use raytrs::color::Color;
-use raytrs::hittable::sphere::Sphere;
-use raytrs::hittable::World;
-use raytrs::material::dilectric::Dilectric;
-use raytrs::material::lambertian::Lambertian;
-use raytrs::material::metal::Metal;
+use raytrs::geometry::Vec3;
+use raytrs::material::Dilectric;
+use raytrs::material::Lambertian;
+use raytrs::material::Metal;
+use raytrs::render::Renderer;
+use raytrs::render::Scene;
+use raytrs::shape::Sphere;
 use raytrs::utils::random;
-use raytrs::vec3::Vec3;
 
 fn main() {
-    let mut world = World::new();
+    let mut scene = Scene::new();
 
     let ground_color = Color::new(0.5, 0.5, 0.5);
-    let ground_material = Lambertian::new(ground_color);
-    let ground = Sphere::new(Vec3::from(0.0, -1000.0, 0.0), 1000.0, ground_material);
-    world.add(Box::new(ground));
+    let ground = Sphere::new(
+        Vec3::new(0.0, -1000.0, 0.0),
+        1000.0,
+        Arc::new(Lambertian::new(ground_color)),
+    );
+    scene.push(Box::new(ground));
 
     for a in -11..=11 {
         for b in -11..=11 {
             let choose_material = random::<f64>();
-            let center = Vec3::from(
+            let center = Vec3::new(
                 a as f64 + 0.9 * random::<f64>(),
                 0.2,
                 b as f64 + 0.9 * random::<f64>(),
@@ -27,27 +34,29 @@ fn main() {
 
             if choose_material < 0.8 {
                 let albedo = Color::random();
-                let material = Lambertian::new(albedo);
-                let sphere = Sphere::new(center, 0.2, material);
-                world.add(Box::new(sphere));
+                let sphere = Sphere::new(center, 0.2, Arc::new(Lambertian::new(albedo)));
+                scene.push(Box::new(sphere));
             } else if choose_material < 0.95 {
                 let albedo = Color::random();
                 let fuzz = random::<f64>();
-                let material = Metal::new(albedo, fuzz);
-                let sphere = Sphere::new(center, 0.2, material);
-                world.add(Box::new(sphere));
+                let sphere = Sphere::new(center, 0.2, Arc::new(Metal::new(albedo, fuzz)));
+                scene.push(Box::new(sphere));
             } else {
-                let material = Dilectric::new(1.5);
-                let sphere = Sphere::new(center, 0.2, material);
-                world.add(Box::new(sphere));
+                let sphere = Sphere::new(center, 0.2, Arc::new(Dilectric::new(1.5)));
+                scene.push(Box::new(sphere));
             }
         }
     }
 
-    let material1 = Lambertian::new(Color::new(0.4, 0.2, 0.1));
-    let sphere1 = Sphere::new(Vec3::from(-4.0, 1.0, 0.0), 1.0, material1);
-    world.add(Box::new(sphere1));
+    let sphere1 = Sphere::new(
+        Vec3::new(-4.0, 1.0, 0.0),
+        1.0,
+        Arc::new(Lambertian::new(Color::new(0.4, 0.2, 0.1))),
+    );
+    scene.push(Box::new(sphere1));
 
-    let cam = Camera::new();
-    cam.render(&world);
+    let ppm_str = scene.render();
+
+    let mut out_file = File::create("output.ppm").unwrap();
+    write!(out_file, "{}", ppm_str).unwrap()
 }

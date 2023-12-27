@@ -1,16 +1,16 @@
-use crate::vec3::Vec3;
+use crate::geometry::Vec3;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Ray {
-    origin: Vec3,
-    direction: Vec3,
+    pub origin: Vec3,
+    pub direction: Vec3,
 }
 
 impl Ray {
-    pub fn from(origin: Vec3, direction: Vec3) -> Ray {
-        Ray {origin, direction}
+    pub fn new(origin: Vec3, direction: Vec3) -> Ray {
+        Ray { origin, direction }
     }
-  
+
     pub fn at(&self, time: f64) -> Vec3 {
         self.origin + self.direction * time
     }

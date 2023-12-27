@@ -1,1 +1,4 @@
-{}
+{
+    "editor.formatOnSave": true,
+    "rust-analyzer.rustfmt.rangeFormatting.enable": true
+}
