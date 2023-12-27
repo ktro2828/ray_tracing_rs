@@ -4,9 +4,9 @@ use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
 
-use ray_tracing::color::Color;
-use ray_tracing::ray::Ray;
-use ray_tracing::vec3::Vec3;
+use raytrs::color::Color;
+use raytrs::ray::Ray;
+use raytrs::vec3::Vec3;
 
 fn sample_ppm() {
     let image_width = 256;

@@ -12,7 +12,7 @@ use rand::{
 /// # Example
 /// 
 /// ```
-/// use ray_tracing::utils::random;
+/// use raytrs::utils::random;
 /// 
 /// let v = random::<f64>();
 /// ```

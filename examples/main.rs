@@ -1,12 +1,12 @@
-use ray_tracing::camera::Camera;
-use ray_tracing::color::Color;
-use ray_tracing::hittable::sphere::Sphere;
-use ray_tracing::hittable::World;
-use ray_tracing::material::dilectric::Dilectric;
-use ray_tracing::material::lambertian::Lambertian;
-use ray_tracing::material::metal::Metal;
-use ray_tracing::utils::random;
-use ray_tracing::vec3::Vec3;
+use raytrs::camera::Camera;
+use raytrs::color::Color;
+use raytrs::hittable::sphere::Sphere;
+use raytrs::hittable::World;
+use raytrs::material::dilectric::Dilectric;
+use raytrs::material::lambertian::Lambertian;
+use raytrs::material::metal::Metal;
+use raytrs::utils::random;
+use raytrs::vec3::Vec3;
 
 fn main() {
     let mut world = World::new();

@@ -1,5 +1,5 @@
 [package]
-name = "ray_tracing"
+name = "raytrs"
 version = "0.1.0"
 authors = ["Kotaro Uetake <kotaro.uetake@tier4.jp>"]
 edition = "2021"

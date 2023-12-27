@@ -10,7 +10,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v, Vec3::from(0.0, 0.0, 0.0));
@@ -24,7 +24,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::ones();
     /// assert_eq!(v, Vec3::from(1.0, 1.0, 1.0));
@@ -38,7 +38,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::from(1.0, 2.0, 3.0);
     /// ```
@@ -51,7 +51,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::rand();
     /// ```
@@ -65,7 +65,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.x(), &0.0);
@@ -78,7 +78,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.y(), &0.0);
@@ -91,7 +91,7 @@ impl Vec3 {
     ///
     /// # Examples
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::zeros();
     /// assert_eq!(v.z(), &0.0);
@@ -104,7 +104,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// let v2 = Vec3::ones();
@@ -119,7 +119,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// let v2 = Vec3::ones();
@@ -135,7 +135,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let n = v.norm();
@@ -149,7 +149,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let n = v.norm_squared();
@@ -163,7 +163,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::ones();
     /// let u = v.as_unit();
@@ -177,7 +177,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v = Vec3::rand_unit();
     /// ```
@@ -189,7 +189,7 @@ impl Vec3 {
     ///
     /// # Example
     /// ```
-    /// use ray_tracing::vec3::Vec3;
+    /// use raytrs::vec3::Vec3;
     ///
     /// let v1 = Vec3::ones();
     /// assert!(v1.is_close(1.0));
@@ -206,7 +206,7 @@ impl Vec3 {
 ///
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 ///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -225,7 +225,7 @@ impl std::ops::Add<Vec3> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 ///
 /// let v = Vec3::ones();
 /// let a = v + 1.0;
@@ -243,7 +243,7 @@ impl std::ops::Add<f64> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 ///
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -262,7 +262,7 @@ impl std::ops::AddAssign<Vec3> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 ///
 /// let mut v = Vec3::ones();
 /// v += 1.0;
@@ -280,7 +280,7 @@ impl std::ops::AddAssign<f64> for Vec3 {
 ///
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 ///
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -299,7 +299,7 @@ impl std::ops::Sub<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let v = Vec3::ones();
 /// let a = v - 1.0;
@@ -317,7 +317,7 @@ impl std::ops::Sub<f64> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -336,7 +336,7 @@ impl std::ops::SubAssign<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v = Vec3::ones();
 /// v -= 1.0;
@@ -354,7 +354,7 @@ impl std::ops::SubAssign<f64> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::zeros();
@@ -373,7 +373,7 @@ impl std::ops::Mul<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let v = Vec3::ones();
 /// let a = v * 0.0;
@@ -391,7 +391,7 @@ impl std::ops::Mul<f64> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::zeros();
@@ -410,7 +410,7 @@ impl std::ops::MulAssign<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v = Vec3::ones();
 /// v *= 0.0;
@@ -428,7 +428,7 @@ impl std::ops::MulAssign<f64> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -447,7 +447,7 @@ impl std::ops::Div<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let v = Vec3::ones();
 /// let a = v / 1.0;
@@ -465,7 +465,7 @@ impl std::ops::Div<f64> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v1 = Vec3::ones();
 /// let v2 = Vec3::ones();
@@ -484,7 +484,7 @@ impl std::ops::DivAssign<Vec3> for Vec3 {
 /// 
 /// # Example
 /// ```
-/// use ray_tracing::vec3::Vec3;
+/// use raytrs::vec3::Vec3;
 /// 
 /// let mut v = Vec3::ones();
 /// v /= 1.0;
