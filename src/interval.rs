@@ -23,7 +23,7 @@ impl Interval {
     }
 
     // Constructs from min/max values.
-    pub fn from(min: f64, max: f64) -> Self {
+    pub fn from_val(min: f64, max: f64) -> Self {
         Interval { min, max }
     }
 

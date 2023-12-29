@@ -1,7 +1,10 @@
 pub(crate) mod sphere;
 
+use std::sync::Arc;
+
 use crate::geometry::Vec3;
 use crate::interval::Interval;
+use crate::material::Material;
 use crate::ray::Ray;
 
 use self::sphere::Sphere as _Sphere;
@@ -18,6 +21,7 @@ pub struct HitInfo {
     pub t: f64,
     pub p: Vec3,
     pub n: Vec3,
+    pub m: Arc<dyn Material>,
 }
 
 impl HitInfo {
@@ -35,8 +39,8 @@ impl HitInfo {
     ///
     /// let info = HitInfo::new(1.0, Vec3::new(1.0, 1.0, 1.0), Vec3::new(1.0, 1.0, 1.0));
     /// ```
-    pub fn new(t: f64, p: Vec3, n: Vec3) -> Self {
-        HitInfo { t, p, n }
+    pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>) -> Self {
+        HitInfo { t, p, n, m }
     }
 }
 
@@ -99,7 +103,7 @@ impl Shape for ShapeList {
         let mut closest_so_far = interval.max;
 
         for obj in &self.objects {
-            if let Some(info) = obj.hit(ray, Interval::from(interval.min, closest_so_far)) {
+            if let Some(info) = obj.hit(ray, Interval::from_val(interval.min, closest_so_far)) {
                 closest_so_far = info.t;
                 hit_info = Some(info);
             }
