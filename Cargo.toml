@@ -10,4 +10,5 @@ license = "Apatch 2.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+katexit = "0.1.4"
 rand = "0.8.5"

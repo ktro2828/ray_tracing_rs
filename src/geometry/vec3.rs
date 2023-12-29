@@ -248,7 +248,25 @@ impl std::ops::Add<f64> for Vec3 {
     }
 }
 
-/// The addition assignment operator `+= Vec3`.
+/// The addition operator `f64 + Vec3`.
+///
+/// # Example
+/// ```
+/// use raytrs::geometry::Vec3;
+///
+/// let v = Vec3::ones();
+/// let a = 1.0 + v;
+/// assert_eq!(a, Vec3::new(2.0, 2.0, 2.0));
+/// ```
+impl std::ops::Add<Vec3> for f64 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Vec3) -> Self::Output {
+        Vec3::new(self + rhs.x(), self + rhs.y(), self + rhs.z())
+    }
+}
+
+/// The addition assignment operator `Vec3 += Vec3`.
 ///
 /// # Example
 /// ```
@@ -267,7 +285,7 @@ impl std::ops::AddAssign<Vec3> for Vec3 {
     }
 }
 
-/// The addition assignment operator `+= f64`.
+/// The addition assignment operator `Vec3 += f64`.
 ///
 /// # Example
 /// ```
@@ -322,7 +340,25 @@ impl std::ops::Sub<f64> for Vec3 {
     }
 }
 
-/// The subtraction assignment operator `-= Vec3`.
+/// The subtraction operator `f64 - Vec3`.
+///
+/// # Example
+/// ```
+/// use raytrs::geometry::Vec3;
+///
+/// let v = Vec3::ones();
+/// let a = 1.0 - v;
+/// assert_eq!(a, Vec3::zeros());
+/// ```
+impl std::ops::Sub<Vec3> for f64 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Vec3) -> Self::Output {
+        Vec3::new(self - rhs.x(), self - rhs.y(), self - rhs.z())
+    }
+}
+
+/// The subtraction assignment operator `Vec3 -= Vec3`.
 ///
 /// # Example
 /// ```
@@ -341,7 +377,7 @@ impl std::ops::SubAssign<Vec3> for Vec3 {
     }
 }
 
-/// The subtraction assignment operator `-= f64`.
+/// The subtraction assignment operator `Vec3 -= f64`.
 ///
 /// # Example
 /// ```
@@ -396,6 +432,16 @@ impl std::ops::Mul<f64> for Vec3 {
     }
 }
 
+/// The multiplication operator `f64 * Vec3`.
+///
+/// # Example
+/// ```
+/// use raytrs::geometry::Vec3;
+///
+/// let v = Vec3::ones();
+/// let a = 0.0 * v;
+/// assert_eq!(a, Vec3::zeros());
+/// ```
 impl std::ops::Mul<Vec3> for f64 {
     type Output = Vec3;
 
@@ -404,7 +450,7 @@ impl std::ops::Mul<Vec3> for f64 {
     }
 }
 
-/// The multiplication assignment operator `*= Vec3`.
+/// The multiplication assignment operator `Vec3 *= Vec3`.
 ///
 /// # Example
 /// ```
@@ -423,7 +469,7 @@ impl std::ops::MulAssign<Vec3> for Vec3 {
     }
 }
 
-/// The multiplication assignment operator `*= f64`.
+/// The multiplication assignment operator `Vec3 *= f64`.
 ///
 /// # Example
 /// ```
@@ -478,7 +524,7 @@ impl std::ops::Div<f64> for Vec3 {
     }
 }
 
-/// The division assignment operator `/= Vec3`.
+/// The division assignment operator `Vec3 /= Vec3`.
 ///
 /// # Example
 /// ```
@@ -497,7 +543,7 @@ impl std::ops::DivAssign<Vec3> for Vec3 {
     }
 }
 
-/// The division assignment operator `/= f64`.
+/// The division assignment operator `Vec3 /= f64`.
 ///
 /// # Example
 /// ```
@@ -515,6 +561,15 @@ impl std::ops::DivAssign<f64> for Vec3 {
     }
 }
 
+/// Performs the unary `-` operation.
+///
+/// # Examples
+/// ```
+/// use raytrs::geometry::Vec3;
+///
+/// let v = -Vec3::ones();
+/// assert_eq!(v, Vec3::new(-1.0, -1.0, -1.0));
+/// ```
 impl std::ops::Neg for Vec3 {
     type Output = Vec3;
     fn neg(self) -> Self::Output {
@@ -522,24 +577,83 @@ impl std::ops::Neg for Vec3 {
     }
 }
 
+#[cfg_attr(doc, katexit::katexit)]
+/// Returns the dot product.
+///
+/// $$
+/// a = \vec{v}_{1} \cdot \vec{v}_{2}
+/// $$
+///
+/// # Arguments
+/// * `v1`  - A vector.
+/// * `v2`  - A vector.
+///
+/// # Examples
+/// ```
+/// use raytrs::geometry::Vec3;
+/// use raytrs::geometry::vec3::dot;
+///
+/// let a = dot(Vec3::ones(), Vec3::ones());
+/// assert_eq!(a, 3.0);
+/// ```
 pub fn dot(v1: Vec3, v2: Vec3) -> f64 {
     v1.dot(v2)
 }
 
+#[cfg_attr(doc, katexit::katexit)]
+/// Returns the cross product.
+///
+/// $$
+/// \vec{v} = \vec{v}_{1} \times \vec{v}_{2}
+/// $$
+///
+/// # Arguments
+/// * `v1`  - A vector.
+/// * `v2`  - A vector.
+///
+/// # Examples
+/// ```
+/// use raytrs::geometry::Vec3;
+/// use raytrs::geometry::vec3::cross;
+///
+/// let v = cross(Vec3::ones(), Vec3::ones());
+/// assert_eq!(v, Vec3::zeros());
+/// ```
 pub fn cross(v1: Vec3, v2: Vec3) -> Vec3 {
     v1.cross(v2)
 }
 
-pub fn reflect(v1: Vec3, v2: Vec3) -> Vec3 {
-    v1 - (v2 * dot(v1, v2) * 2.0)
+#[cfg_attr(doc, katexit::katexit)]
+/// Returns the reflected vector.
+///
+/// $$
+/// \vec{r} = \vec{v} - 2.0 * \vec{v} \cdot \vec{n}
+/// $$
+///
+/// # Arguments
+/// * `v`   - A vector.
+/// * `n`   - A normal vector of reflection surface.
+pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
+    v - (n * dot(v, n) * 2.0)
 }
 
-pub fn refract(v1: Vec3, v2: Vec3, ratio: f64) -> Option<Vec3> {
-    let uv = v1.as_unit();
-    let dt = uv.dot(v2);
+#[cfg_attr(doc, katexit::katexit)]
+/// Returns the refracted vector with snell's law as follows.
+///
+/// $$
+/// \vec{\omega_{r}} = \-\frac{\eta_{1}}{\eta_{2}}(\vec{\omega} - (\vec{\omega}\cdot\vec{n})\vec{n} - \vec{n}\sqrt{1 - (\frac{\eta_{1}}{\eta_{2}})^2(1 - (\vec{\omega}\cdot\vec{n})^2)}
+/// $$
+///
+/// # Arguments
+/// * `v`      - A vector orthogonal to the normal vector of refraction surface.
+/// * `n`      - A normal vector of refraction surface.
+/// * `ratio`   - $\frac{\eta_{1}}{\eta_{2}}$
+pub fn refract(v: Vec3, n: Vec3, ratio: f64) -> Option<Vec3> {
+    let uv = v.as_unit();
+    let dt = uv.dot(n);
     let d = 1.0 - ratio.powi(2) * (1.0 - dt.powi(2));
     if d > 0.0 {
-        Some(-ratio * (uv - v2 * dt) - v2 * d.sqrt())
+        Some(-ratio * (uv - n * dt) - n * d.sqrt())
     } else {
         None
     }

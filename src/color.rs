@@ -1,6 +1,7 @@
 // use crate::interval::Interval;
 use crate::utils::random;
 
+/// A struct to represent RGB color.
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
     pub r: f64,
@@ -9,10 +10,17 @@ pub struct Color {
 }
 
 impl Color {
+    /// Constructs RGB with specified values in `[0.0, 1.0]`.
+    ///
+    /// # Arguments
+    /// * `r`   - R channel value.
+    /// * `g`   - G channel value.
+    /// * `b`   - B channel value.
     pub fn new(r: f64, g: f64, b: f64) -> Self {
         Color { r, g, b }
     }
 
+    /// Constructs random color.
     pub fn random() -> Self {
         let r = random::<f64>();
         let g = random::<f64>();

@@ -12,11 +12,17 @@ const IMAGE_WIDTH: u32 = 300;
 const IMAGE_HEIGHT: u32 = 200;
 const SAMPLES_PER_PIXEL: usize = 10;
 
+/// Represents the rendering mode.
+///
+/// # Variants
+/// * `BASIC`   - Basic mode.
+/// * `AA`      - Anti-Aliasing mode.
 pub enum RenderMode {
     BASIC,
     AA,
 }
 
+/// A trait to render scene.
 pub trait Renderer {
     fn camera(&self) -> Camera;
     fn trace(&self, ray: Ray) -> Color;
@@ -49,6 +55,7 @@ pub trait Renderer {
     }
 }
 
+/// A struct to represent scene to render.
 pub struct Scene {
     world: ShapeList,
 }

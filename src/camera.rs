@@ -52,7 +52,7 @@ impl Camera {
     /// * `origin`  - The Camera origin.
     /// * `lookat`  - The position where the camera looks at.
     /// * `vup`     - The normalized vector of up direction.
-    /// * `vov`     - The vertical angle of FOV [deg].
+    /// * `vov`     - The vertical angle of FOV \[deg\].
     /// * `aspect`  - The aspect ratio of the image.
     ///
     /// # Examples

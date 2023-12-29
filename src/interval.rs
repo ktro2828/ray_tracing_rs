@@ -1,3 +1,4 @@
+/// A struct to represent min/max range of the ray interval.
 #[derive(Debug)]
 pub struct Interval {
     pub(crate) min: f64,
@@ -14,7 +15,8 @@ impl Interval {
         max: f64::INFINITY,
     };
 
-    // Constructs without any values, the min/max value will be `-f64::INFINITY` and `f64::INFINITY`.
+    /// Constructs without any values.
+    /// The min/max value will be `-f64::INFINITY` and `f64::INFINITY`.
     pub fn new() -> Self {
         Interval {
             min: -f64::INFINITY,
@@ -22,22 +24,22 @@ impl Interval {
         }
     }
 
-    // Constructs from min/max values.
+    /// Constructs from min/max values.
     pub fn from_val(min: f64, max: f64) -> Self {
         Interval { min, max }
     }
 
-    // Returns the difference between min and max.
+    /// Returns the difference between min and max.
     pub fn size(&self) -> f64 {
         self.max - self.min
     }
 
-    // Returns `true`, if `min <= x <= max`.
+    /// Returns `true`, if `min <= x <= max`.
     pub fn contains(&self, x: f64) -> bool {
         self.min <= x && x <= self.max
     }
 
-    // Returns `true`, if `min < x < max`.
+    /// Returns `true`, if `min < x < max`.
     pub fn surrounds(&self, x: f64) -> bool {
         self.min < x && x < self.max
     }
