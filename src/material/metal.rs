@@ -14,11 +14,13 @@ pub struct Metal {
 
 impl Material for Metal {
     fn scatter(&self, ray: &Ray, info: &HitInfo) -> Option<ScatterInfo> {
-        let reflected = reflect(ray.direction().as_unit(), info.n);
-        Some(ScatterInfo::new(
-            Ray::new(info.p, reflected + Vec3::rand_unit() * self.fuzz),
-            self.albedo,
-        ))
+        let mut reflected = reflect(ray.direction().as_unit(), info.n);
+        reflected += Vec3::rand_unit() * self.fuzz;
+        if reflected.dot(info.n) > 0.0 {
+            Some(ScatterInfo::new(Ray::new(info.p, reflected), self.albedo))
+        } else {
+            None
+        }
     }
 }
 

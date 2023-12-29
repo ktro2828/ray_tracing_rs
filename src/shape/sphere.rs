@@ -74,7 +74,12 @@ impl Shape for Sphere {
             };
             if interval.min < t && t < interval.max {
                 let p = ray.at(t);
-                return Some(HitInfo::new(t, p, (p - self.center) / self.radius));
+                return Some(HitInfo::new(
+                    t,
+                    p,
+                    (p - self.center) / self.radius,
+                    Arc::clone(&self.material),
+                ));
             }
         }
         None
