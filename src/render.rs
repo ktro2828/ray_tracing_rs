@@ -27,7 +27,7 @@ pub enum RenderMode {
 
 /// A trait to render scene.
 pub trait Renderer {
-    fn camera(&self) -> Camera;
+    fn camera(&self) -> &Camera;
     fn trace(&self, ray: Ray) -> Color;
 
     /// Render scene with basic mode.
@@ -60,13 +60,14 @@ pub trait Renderer {
 
 /// A struct to represent scene to render.
 pub struct Scene {
+    camera: Camera,
     world: ShapeList,
 }
 
 impl Scene {
-    pub fn new() -> Self {
+    pub fn new(camera: Camera) -> Self {
         let world = ShapeList::new();
-        Self { world }
+        Self { camera, world }
     }
 
     pub fn push(&mut self, object: Box<dyn Shape>) {
@@ -80,12 +81,8 @@ impl Scene {
 }
 
 impl Renderer for Scene {
-    fn camera(&self) -> Camera {
-        Camera::new(
-            Vec3::new(4.0, 0.0, 0.0),
-            Vec3::new(0.0, 2.0, 0.0),
-            Vec3::new(-2.0, -1.0, -1.0),
-        )
+    fn camera(&self) -> &Camera {
+        &self.camera
     }
 
     fn trace(&self, ray: Ray) -> Color {
