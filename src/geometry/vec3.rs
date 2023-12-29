@@ -188,6 +188,7 @@ impl Vec3 {
     /// use raytrs::geometry::Vec3;
     ///
     /// let v = Vec3::rand_unit();
+    /// assert!(v.norm() <= 1.0);
     /// ```
     pub fn rand_unit() -> Self {
         Vec3::rand().as_unit()
