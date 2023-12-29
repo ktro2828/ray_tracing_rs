@@ -1,6 +1,6 @@
 use self::vec3::Vec3 as _Vec3;
 
-pub mod vec3;
+pub(crate) mod vec3;
 
 /// An alias of `Vec3`
 pub type Point3 = Vec3;

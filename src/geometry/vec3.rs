@@ -596,7 +596,7 @@ impl std::ops::Neg for Vec3 {
 /// let a = dot(Vec3::ones(), Vec3::ones());
 /// assert_eq!(a, 3.0);
 /// ```
-pub fn dot(v1: Vec3, v2: Vec3) -> f64 {
+pub(crate) fn dot(v1: Vec3, v2: Vec3) -> f64 {
     v1.dot(v2)
 }
 
@@ -619,7 +619,8 @@ pub fn dot(v1: Vec3, v2: Vec3) -> f64 {
 /// let v = cross(Vec3::ones(), Vec3::ones());
 /// assert_eq!(v, Vec3::zeros());
 /// ```
-pub fn cross(v1: Vec3, v2: Vec3) -> Vec3 {
+#[allow(dead_code)]
+pub(crate) fn cross(v1: Vec3, v2: Vec3) -> Vec3 {
     v1.cross(v2)
 }
 
@@ -633,7 +634,7 @@ pub fn cross(v1: Vec3, v2: Vec3) -> Vec3 {
 /// # Arguments
 /// * `v`   - A vector.
 /// * `n`   - A normal vector of reflection surface.
-pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
+pub(crate) fn reflect(v: Vec3, n: Vec3) -> Vec3 {
     v - (n * dot(v, n) * 2.0)
 }
 
@@ -648,7 +649,7 @@ pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
 /// * `v`      - A vector orthogonal to the normal vector of refraction surface.
 /// * `n`      - A normal vector of refraction surface.
 /// * `ratio`   - $\frac{\eta_{1}}{\eta_{2}}$
-pub fn refract(v: Vec3, n: Vec3, ratio: f64) -> Option<Vec3> {
+pub(crate) fn refract(v: Vec3, n: Vec3, ratio: f64) -> Option<Vec3> {
     let uv = v.as_unit();
     let dt = uv.dot(n);
     let d = 1.0 - ratio.powi(2) * (1.0 - dt.powi(2));
