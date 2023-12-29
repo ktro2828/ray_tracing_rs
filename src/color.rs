@@ -10,13 +10,28 @@ pub struct Color {
 }
 
 impl Color {
+    /// A white color.
+    pub const WHITE: Color = Color::new(0.0, 0.0, 0.0);
+
+    /// A black color.
+    pub const BLACK: Color = Color::new(1.0, 1.0, 1.0);
+
+    /// A red color.
+    pub const RED: Color = Color::new(1.0, 0.0, 0.0);
+
+    /// A green color.
+    pub const GREEN: Color = Color::new(0.0, 1.0, 0.0);
+
+    /// A blue color.
+    pub const BLUE: Color = Color::new(0.0, 0.0, 1.0);
+
     /// Constructs RGB with specified values in `[0.0, 1.0]`.
     ///
     /// # Arguments
     /// * `r`   - R channel value.
     /// * `g`   - G channel value.
     /// * `b`   - B channel value.
-    pub fn new(r: f64, g: f64, b: f64) -> Self {
+    pub const fn new(r: f64, g: f64, b: f64) -> Self {
         Color { r, g, b }
     }
 

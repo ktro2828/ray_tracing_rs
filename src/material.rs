@@ -20,7 +20,7 @@ pub type Metal = _Metal;
 /// A trait for object's material.
 pub trait Material: Sync + Send {
     fn emitted(&self, _u: &f64, _v: &f64, _p: &Vec3) -> Color {
-        Color::new(0.0, 0.0, 0.0)
+        Color::WHITE
     }
 
     fn scatter(&self, ray: &Ray, info: &HitInfo) -> Option<ScatterInfo>;
