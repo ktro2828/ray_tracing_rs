@@ -48,13 +48,31 @@ impl Sphere {
     }
 }
 
+#[cfg_attr(doc, katexit::katexit)]
 impl Shape for Sphere {
-    /// Returns `HitInfo` if ray hits to Sphere.
+    /// Returns `HitInfo` if ray hits to itself.
     ///
-    /// 1. Computes discriminant.
-    /// 2. If discriminant > 0.0, it means ray hits.
+    /// 1. Computes discriminant `D`.
+    /// 2. If `D` > 0.0, it means ray hit.
     /// 3. Computes the `t` which is the time ray hits to sphere.
     /// 4. Computes the unit normal vector from center to the point at `t`.
+    ///
+    /// $$
+    /// (\vec{p} - \vec{c}) \cdot (\vec{p} - \vec{c}) = r^2
+    /// $$
+    /// with the ray equation $\vec{p}(t) = \vec{o} + t\vec{d} $,
+    /// $$
+    /// (\vec{p}(t) - \vec{c}) \cdot (\vec{p}(t) - \vec{c}) = r^2
+    /// $$
+    /// and expands formula as `t`,
+    /// $$
+    /// (\vec{d} \cdot \vec{d})t^2 + 2(\vec{d} \cdot \vec{oc})t + (\vec{oc} \cdot \vec{oc}) - r^2 = 0
+    /// $$
+    ///
+    /// finally, the solution of formula is as follows,
+    /// $$
+    /// t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+    /// $$
     ///
     /// # Arguments
     /// * `ray`         - Ray from camera.
