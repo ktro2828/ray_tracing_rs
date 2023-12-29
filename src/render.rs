@@ -1,4 +1,5 @@
 use image::{Rgb, RgbImage};
+use rayon::prelude::*;
 
 use crate::{
     camera::Camera,
@@ -101,7 +102,7 @@ impl Renderer for Scene {
         let mut img = RgbImage::new(self.width(), self.height());
         img.enumerate_pixels_mut()
             .collect::<Vec<(u32, u32, &mut Rgb<u8>)>>()
-            .iter_mut()
+            .par_iter_mut()
             .for_each(|(x, y, pixel)| {
                 let u = *x as f64 / (self.width() - 1) as f64;
                 let v = *y as f64 / (self.height() - 1) as f64;
@@ -118,7 +119,7 @@ impl Renderer for Scene {
         let mut img = RgbImage::new(self.width(), self.height());
         img.enumerate_pixels_mut()
             .collect::<Vec<(u32, u32, &mut Rgb<u8>)>>()
-            .iter_mut()
+            .par_iter_mut()
             .for_each(|(x, y, pixel)| {
                 let mut px_color =
                     (0..SAMPLES_PER_PIXEL)
