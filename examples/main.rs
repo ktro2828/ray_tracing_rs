@@ -36,28 +36,39 @@ fn main() {
                 b as f64 + 0.9 * random::<f64>(),
             );
 
-            if material_choice < 0.8 {
-                let albedo = Color::random();
-                let sphere = Sphere::new(center, 0.2, Arc::new(Lambertian::new(albedo)));
-                scene.push(Box::new(sphere));
-            } else if material_choice < 0.95 {
-                let albedo = Color::random();
-                let fuzz = random::<f64>();
-                let sphere = Sphere::new(center, 0.2, Arc::new(Metal::new(albedo, fuzz)));
-                scene.push(Box::new(sphere));
-            } else {
-                let sphere = Sphere::new(center, 0.2, Arc::new(Dilectric::new(1.5)));
-                scene.push(Box::new(sphere));
+            if (center - Vec3::new(4.0, 0.2, 0.0)).norm() > 0.9 {
+                if material_choice < 0.8 {
+                    let albedo = Color::random();
+                    let sphere = Sphere::new(center, 0.2, Arc::new(Lambertian::new(albedo)));
+                    scene.push(Box::new(sphere));
+                } else if material_choice < 0.95 {
+                    let albedo = Color::random();
+                    let fuzz = random::<f64>();
+                    let sphere = Sphere::new(center, 0.2, Arc::new(Metal::new(albedo, fuzz)));
+                    scene.push(Box::new(sphere));
+                } else {
+                    let sphere = Sphere::new(center, 0.2, Arc::new(Dilectric::new(1.5)));
+                    scene.push(Box::new(sphere));
+                }
             }
         }
     }
 
-    let sphere1 = Sphere::new(
+    scene.push(Box::new(Sphere::new(
+        Vec3::new(0.0, 1.0, 0.0),
+        1.0,
+        Arc::new(Dilectric::new(1.5)),
+    )));
+    scene.push(Box::new(Sphere::new(
         Vec3::new(-4.0, 1.0, 0.0),
         1.0,
         Arc::new(Lambertian::new(Color::new(0.4, 0.2, 0.1))),
-    );
-    scene.push(Box::new(sphere1));
+    )));
+    scene.push(Box::new(Sphere::new(
+        Vec3::new(4.0, 1.0, 0.0),
+        1.0,
+        Arc::new(Metal::new(Color::new(0.7, 0.6, 0.5), 0.0)),
+    )));
 
     let img_basic = scene.render(RenderMode::BASIC);
     img_basic.save("basic.png").unwrap();

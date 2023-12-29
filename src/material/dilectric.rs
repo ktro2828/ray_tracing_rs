@@ -5,11 +5,19 @@ use crate::shape::HitInfo;
 
 use super::scatter::ScatterInfo;
 
+/// A struct to represent dilectric material.
 pub struct Dilectric {
     pub ir: f64,
 }
 
 impl Material for Dilectric {
+    /// Returns `ScatterInfo`.
+    /// If the ray is refracted returns scatter with refracted vector.
+    /// Otherwise, returns with reflected vector.
+    ///
+    /// # Arguments
+    /// * `ray`     - `Ray` instance.
+    /// * `info`    - `HitInfo` instance.
     fn scatter(&self, ray: &Ray, info: &HitInfo) -> Option<ScatterInfo> {
         let reflected = ray.direction().reflect(info.n);
         let (outward_normal, ni_over_nt) = {
@@ -28,6 +36,10 @@ impl Material for Dilectric {
 }
 
 impl Dilectric {
+    /// Constructs `Dilectric`.
+    ///
+    /// # Arguments
+    /// * `ir`  - The reflectance.
     pub fn new(ir: f64) -> Self {
         Dilectric { ir }
     }

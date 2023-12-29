@@ -57,6 +57,17 @@ impl Color {
         self.linear2gamma(factor).to_string()
     }
 
+    /// Convert normalized float values to RGB in u8
+    ///
+    /// # Examples
+    /// ```
+    /// use raytrs::color::Color;
+    ///
+    /// let [r, g, b] = Color::RED.to_rgb();
+    /// assert_eq!(r, 255);
+    /// assert_eq!(g, 0);
+    /// assert_eq!(b, 0);
+    /// ```
     pub fn to_rgb(&self) -> [u8; 3] {
         let r = (255.99 * self.r) as u8;
         let g = (255.99 * self.g) as u8;

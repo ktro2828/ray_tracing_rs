@@ -87,6 +87,7 @@ impl Renderer for Scene {
 
     fn trace(&self, ray: Ray) -> Color {
         const REFLECTANCE: f64 = 0.5;
+        // TODO: fix the scatter becomes infinite loop
         if let Some(hit_info) = self.world.hit(&ray, Interval::new()) {
             REFLECTANCE
                 * (Color::new(*hit_info.n.x(), *hit_info.n.y(), *hit_info.n.z()) + Color::WHITE)

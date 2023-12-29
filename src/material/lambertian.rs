@@ -6,11 +6,14 @@ use crate::shape::HitInfo;
 
 use super::scatter::ScatterInfo;
 
+/// A struct to represent lambertian material.
 pub struct Lambertian {
     pub albedo: Color,
 }
 
 impl Material for Lambertian {
+    /// Returns `ScatterInfo`.
+    /// If the scatter direction is close to `0.0` the normal vector will be used as scatter direction.
     fn scatter(&self, _ray: &Ray, info: &HitInfo) -> Option<ScatterInfo> {
         let mut scatter_dir = info.n + Vec3::rand_unit();
 
@@ -22,6 +25,7 @@ impl Material for Lambertian {
 }
 
 impl Lambertian {
+    /// Constructs `Lambertian`.
     pub fn new(albedo: Color) -> Self {
         Lambertian { albedo }
     }
