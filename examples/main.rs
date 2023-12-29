@@ -1,5 +1,3 @@
-use std::fs::File;
-use std::io::Write;
 use std::sync::Arc;
 
 use raytrs::color::Color;
@@ -56,11 +54,9 @@ fn main() {
     );
     scene.push(Box::new(sphere1));
 
-    let ppm_basic_str = scene.render(RenderMode::BASIC);
-    let mut out_basic_file = File::create("output_basic.ppm").unwrap();
-    write!(out_basic_file, "{}", ppm_basic_str).unwrap();
+    let img_basic = scene.render(RenderMode::BASIC);
+    img_basic.save("basic.png").unwrap();
 
-    let ppm_aa_str = scene.render(RenderMode::AA);
-    let mut out_aa_file = File::create("output_aa.ppm").unwrap();
-    write!(out_aa_file, "{}", ppm_aa_str).unwrap()
+    let img_aa = scene.render(RenderMode::AA);
+    img_aa.save("aa.png").unwrap();
 }

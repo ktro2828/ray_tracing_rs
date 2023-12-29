@@ -56,6 +56,13 @@ impl Color {
         let factor = 1.0 / samples_per_pixel as f64;
         self.linear2gamma(factor).to_string()
     }
+
+    pub fn to_rgb(&self) -> [u8; 3] {
+        let r = (255.99 * self.r) as u8;
+        let g = (255.99 * self.g) as u8;
+        let b = (255.99 * self.b) as u8;
+        [r, g, b]
+    }
 }
 
 impl std::ops::Add<Color> for Color {
