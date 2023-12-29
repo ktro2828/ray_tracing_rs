@@ -9,6 +9,7 @@ use crate::ray::Ray;
 
 use self::sphere::Sphere as _Sphere;
 
+#[cfg_attr(doc, katexit::katexit)]
 pub type Sphere = _Sphere;
 
 /// A container to store hit information
