@@ -37,7 +37,7 @@ impl HitInfo {
     /// use raytrs::shape::HitInfo;
     /// use raytrs::geometry::Vec3;
     ///
-    /// let info = HitInfo::new(1.0, Vec3::new(1.0, 1.0, 1.0), Vec3::new(1.0, 1.0, 1.0));
+    /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones());
     /// ```
     pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>) -> Self {
         HitInfo { t, p, n, m }
@@ -88,7 +88,7 @@ impl ShapeList {
     /// use raytrs::material::Lambertian;
     ///
     /// let mut world = ShapeList::new();
-    /// let sphere = Sphere::new(Vec3::new(1.0, 1.0, 1.0), 10.0, Arc::new(Lambertian::new(Color::random())));
+    /// let sphere = Sphere::new(Vec3::ones(), 10.0, Arc::new(Lambertian::new(Color::random())));
     ///
     /// world.push(Box::new(sphere));
     /// ```
