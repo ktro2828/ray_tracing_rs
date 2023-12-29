@@ -9,11 +9,6 @@ pub struct Color {
 }
 
 impl Color {
-    // const INTENSITY: Interval = Interval {
-    //     min: 0.000,
-    //     max: 0.999,
-    // };
-
     pub fn new(r: f64, g: f64, b: f64) -> Self {
         Color { r, g, b }
     }
@@ -29,16 +24,14 @@ impl Color {
         *self + (c - *self) * t
     }
 
-    pub fn linear2gamma(&self, linear_component: f64) -> f64 {
-        linear_component.sqrt()
+    pub fn linear2gamma(&self, factor: f64) -> Self {
+        let inv = factor.recip();
+        Color::new(self.r.powf(inv), self.g.powf(inv), self.b.powf(inv))
     }
 
-    pub fn to_string_with_scale(&self, samples_per_pixel: &u32) -> String {
-        let scale = 1.0 / *samples_per_pixel as f64;
-        let r = self.linear2gamma(self.r * scale);
-        let g = self.linear2gamma(self.g * scale);
-        let b = self.linear2gamma(self.b * scale);
-        Color::new(r, g, b).to_string()
+    pub fn to_string_gamma(&self, samples_per_pixel: usize) -> String {
+        let factor = 1.0 / samples_per_pixel as f64;
+        self.linear2gamma(factor).to_string()
     }
 }
 
