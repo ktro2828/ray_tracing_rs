@@ -20,9 +20,9 @@ impl Material for Dilectric {
             }
         };
         if let Some(refracted) = (-ray.direction).refract(outward_normal, ni_over_nt) {
-            Some(ScatterInfo::new(Ray::new(info.p, refracted), Color::BLACK))
+            Some(ScatterInfo::new(Ray::new(info.p, refracted), Color::WHITE))
         } else {
-            Some(ScatterInfo::new(Ray::new(info.p, reflected), Color::BLACK))
+            Some(ScatterInfo::new(Ray::new(info.p, reflected), Color::WHITE))
         }
     }
 }

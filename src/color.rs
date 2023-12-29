@@ -10,11 +10,11 @@ pub struct Color {
 }
 
 impl Color {
-    /// A white color.
-    pub const WHITE: Color = Color::new(0.0, 0.0, 0.0);
-
     /// A black color.
-    pub const BLACK: Color = Color::new(1.0, 1.0, 1.0);
+    pub const BLACK: Color = Color::new(0.0, 0.0, 0.0);
+
+    /// A white color.
+    pub const WHITE: Color = Color::new(1.0, 1.0, 1.0);
 
     /// A red color.
     pub const RED: Color = Color::new(1.0, 0.0, 0.0);
