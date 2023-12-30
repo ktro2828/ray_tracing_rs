@@ -36,7 +36,6 @@ impl Sphere {
     /// use raytrs::geometry::Vec3;
     /// use raytrs::material::Lambertian;
     ///
-    /// let mut world = ShapeList::new();
     /// let sphere = Sphere::new(Vec3::new(1.0, 1.0, 1.0), 10.0, Arc::new(Lambertian::new(Color::random())));
     /// ```
     pub fn new(center: Vec3, radius: f64, material: Arc<dyn Material>) -> Self {

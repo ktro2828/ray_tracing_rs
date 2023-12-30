@@ -17,6 +17,8 @@ fn main() {
         Vec3::new(4.0, 0.0, 0.0),
         Vec3::new(0.0, 2.0, 0.0),
         Vec3::new(-2.0, -1.0, -1.0),
+        400,
+        200,
     ));
 
     let ground_color = Color::new(0.5, 0.5, 0.5);

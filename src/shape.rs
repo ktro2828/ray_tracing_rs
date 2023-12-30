@@ -35,10 +35,12 @@ impl HitInfo {
     ///
     /// # Examples
     /// ```
+    /// use std::sync::Arc;
     /// use raytrs::shape::HitInfo;
     /// use raytrs::geometry::Vec3;
+    /// use raytrs::material::Dilectric;
     ///
-    /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones());
+    /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones(), Arc::new(Dilectric::new(1.5)));
     /// ```
     pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>) -> Self {
         HitInfo { t, p, n, m }

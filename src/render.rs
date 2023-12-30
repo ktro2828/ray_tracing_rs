@@ -11,8 +11,6 @@ use crate::{
 };
 
 // TODO: allow to set as parameter.
-const IMAGE_WIDTH: u32 = 300;
-const IMAGE_HEIGHT: u32 = 200;
 const SAMPLES_PER_PIXEL: usize = 10;
 
 /// Represents the rendering mode.
@@ -48,11 +46,13 @@ pub trait Renderer {
     }
 
     fn width(&self) -> u32 {
-        IMAGE_WIDTH
+        self.camera().width
     }
+
     fn height(&self) -> u32 {
-        IMAGE_HEIGHT
+        self.camera().height
     }
+
     fn aspect(&self) -> f64 {
         self.width() as f64 / self.height() as f64
     }

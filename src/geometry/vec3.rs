@@ -587,15 +587,6 @@ impl std::ops::Neg for Vec3 {
 /// # Arguments
 /// * `v1`  - A vector.
 /// * `v2`  - A vector.
-///
-/// # Examples
-/// ```
-/// use raytrs::geometry::Vec3;
-/// use raytrs::geometry::vec3::dot;
-///
-/// let a = dot(Vec3::ones(), Vec3::ones());
-/// assert_eq!(a, 3.0);
-/// ```
 pub(crate) fn dot(v1: Vec3, v2: Vec3) -> f64 {
     v1.dot(v2)
 }
@@ -610,15 +601,6 @@ pub(crate) fn dot(v1: Vec3, v2: Vec3) -> f64 {
 /// # Arguments
 /// * `v1`  - A vector.
 /// * `v2`  - A vector.
-///
-/// # Examples
-/// ```
-/// use raytrs::geometry::Vec3;
-/// use raytrs::geometry::vec3::cross;
-///
-/// let v = cross(Vec3::ones(), Vec3::ones());
-/// assert_eq!(v, Vec3::zeros());
-/// ```
 #[allow(dead_code)]
 pub(crate) fn cross(v1: Vec3, v2: Vec3) -> Vec3 {
     v1.cross(v2)

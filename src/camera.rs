@@ -16,15 +16,19 @@ pub struct Camera {
     pub u: Vec3,
     pub v: Vec3,
     pub w: Vec3,
+    pub width: u32,
+    pub height: u32,
 }
 
 impl Camera {
     /// Constructs `Camera` instance from uvw vectors.
     ///
     /// # Arguments
-    /// * `u`   -
-    /// * `v`   -
-    /// * `w`   -
+    /// * `u`       -
+    /// * `v`       -
+    /// * `w`       -
+    /// * `width`   - The image width.
+    /// * `height`  - The image height.
     ///
     /// # Examples
     /// ```
@@ -35,14 +39,18 @@ impl Camera {
     ///     Vec3::new(4.0, 0.0, 0.0),
     ///     Vec3::new(0.0, 2.0, 0.0),
     ///     Vec3::new(-2.0, -1.0, -1.0),
+    ///     300,
+    ///     300,
     /// );
     /// ```
-    pub fn new(u: Vec3, v: Vec3, w: Vec3) -> Self {
+    pub fn new(u: Vec3, v: Vec3, w: Vec3, width: u32, height: u32) -> Self {
         Self {
             origin: Vec3::zeros(),
             u,
             v,
             w,
+            width,
+            height,
         }
     }
 
@@ -53,7 +61,8 @@ impl Camera {
     /// * `lookat`  - The position where the camera looks at.
     /// * `vup`     - The normalized vector of up direction.
     /// * `vov`     - The vertical angle of FOV \[deg\].
-    /// * `aspect`  - The aspect ratio of the image.
+    /// * `width`   - The image width.
+    /// * `height`  - The image height.
     ///
     /// # Examples
     /// ```
@@ -65,12 +74,20 @@ impl Camera {
     ///     Vec3::new(0.0, 0.0, -1.0),
     ///     Vec3::new(0.0, 1.0, 0.0),
     ///     60.0,
-    ///     1.6,
+    ///     300,
+    ///     200,
     /// );
     /// ```
-    pub fn from_lookat(origin: Vec3, lookat: Vec3, vup: Vec3, vfov: f64, aspect: f64) -> Self {
+    pub fn from_lookat(
+        origin: Vec3,
+        lookat: Vec3,
+        vup: Vec3,
+        vfov: f64,
+        width: u32,
+        height: u32,
+    ) -> Self {
         let half_h = (vfov.to_radians() * 0.5).tan();
-        let half_w = aspect * half_h;
+        let half_w = (width as f64 / height as f64) * half_h;
         let w = (origin - lookat).as_unit();
         let u = vup.cross(w).as_unit();
         let v = w.cross(u);
@@ -81,6 +98,8 @@ impl Camera {
             u: 2.0 * uw,
             v: 2.0 * vh,
             w: origin - uw - vh - w,
+            width,
+            height,
         }
     }
 
