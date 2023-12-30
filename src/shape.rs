@@ -1,5 +1,6 @@
 pub(crate) mod sphere;
 
+use std::f64::consts::PI;
 use std::sync::Arc;
 
 use crate::geometry::Vec3;
@@ -55,6 +56,8 @@ pub trait Shape: Sync {
     /// * `ray` - A `Ray` instance.
     /// * `interval` - Interval of the ray.
     fn hit(&self, ray: &Ray, interval: Interval) -> Option<HitInfo>;
+
+    fn get_uv(&self, p: Vec3) -> (f64, f64);
 }
 
 /// A container to store objects in the world.
@@ -112,5 +115,13 @@ impl Shape for ShapeList {
             }
         }
         hit_info
+    }
+
+    fn get_uv(&self, p: Vec3) -> (f64, f64) {
+        let phi = p.z().atan2(*p.x());
+        let theta = p.y().asin();
+        let u = 1.0 - (phi + PI) / (2.0 * PI);
+        let v = (theta + PI / 2.0) / PI;
+        (u, v)
     }
 }
