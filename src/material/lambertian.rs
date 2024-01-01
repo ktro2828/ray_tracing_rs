@@ -7,6 +7,7 @@ use super::scatter::ScatterInfo;
 use super::Texture;
 
 /// A struct to represent lambertian material.
+#[derive(Debug)]
 pub struct Lambertian {
     pub albedo: Box<dyn Texture>,
 }

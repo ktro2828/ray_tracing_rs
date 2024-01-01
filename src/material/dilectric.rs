@@ -6,6 +6,7 @@ use crate::shape::HitInfo;
 use super::scatter::ScatterInfo;
 
 /// A struct to represent dilectric material.
+#[derive(Debug)]
 pub struct Dilectric {
     pub ir: f64,
 }

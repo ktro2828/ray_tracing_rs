@@ -8,6 +8,7 @@ use super::scatter::ScatterInfo;
 use super::Texture;
 
 /// A struct to represent metal material.
+#[derive(Debug)]
 pub struct Metal {
     pub(crate) albedo: Box<dyn Texture>,
     pub(crate) fuzz: f64,

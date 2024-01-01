@@ -5,6 +5,7 @@ use crate::color::Color;
 use super::Texture;
 use crate::geometry::Vec3;
 
+#[derive(Debug)]
 pub struct ColorTexture {
     color: Color,
 }
@@ -21,6 +22,7 @@ impl Texture for ColorTexture {
     }
 }
 
+#[derive(Debug)]
 pub struct CheckerTexture {
     odd: Box<dyn Texture>,
     even: Box<dyn Texture>,
@@ -44,6 +46,7 @@ impl Texture for CheckerTexture {
     }
 }
 
+#[derive(Debug)]
 pub struct ImageTexture {
     pixels: Vec<Color>,
     width: usize,

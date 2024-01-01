@@ -18,6 +18,7 @@ pub type Sphere = _Sphere;
 /// * `t` - A parameter of the ray.
 /// * `p` - A point where ray collides with an object.
 /// * `n` - A normal vector on the collision point.
+#[derive(Debug)]
 pub struct HitInfo {
     pub t: f64,
     pub p: Vec3,
