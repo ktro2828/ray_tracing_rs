@@ -11,6 +11,7 @@ pub struct Ray {
     pub direction: Vec3,
 }
 
+#[cfg_attr(doc, katexit::katexit)]
 impl Ray {
     /// Constructs ray from specified values.
     ///
@@ -22,6 +23,10 @@ impl Ray {
     }
 
     /// Returns the point of ray at specified time.
+    ///
+    /// $$
+    /// \vec{p} = \vec{o} + t * \vec{d}
+    /// $$
     ///
     /// # Arguments
     /// * `time`    - Specific time.

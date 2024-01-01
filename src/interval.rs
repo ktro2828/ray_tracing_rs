@@ -19,7 +19,7 @@ impl Interval {
     /// The min/max value will be `-f64::INFINITY` and `f64::INFINITY`.
     pub fn new() -> Self {
         Interval {
-            min: 0.0,
+            min: f64::MIN,
             max: f64::MAX,
         }
     }

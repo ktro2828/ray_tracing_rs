@@ -89,6 +89,8 @@ impl Renderer for Scene {
         const REFLECTANCE: f64 = 0.5;
         // TODO: fix the scatter becomes infinite loop
         if let Some(hit_info) = self.world.hit(&ray, Interval::new()) {
+            // let direction = hit_info.n + Vec3::rand_unit();
+            // REFLECTANCE * self.trace(Ray::new(hit_info.p, direction))
             REFLECTANCE
                 * (Color::new(*hit_info.n.x(), *hit_info.n.y(), *hit_info.n.z()) + Color::WHITE)
         } else {
