@@ -1,6 +1,5 @@
 pub(crate) mod sphere;
 
-use std::f64::consts::PI;
 use std::sync::Arc;
 
 use crate::geometry::Vec3;
@@ -43,7 +42,7 @@ impl HitInfo {
     /// use raytrs::geometry::Vec3;
     /// use raytrs::material::Dilectric;
     ///
-    /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones(), Arc::new(Dilectric::new(1.5)));
+    /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones(), Arc::new(Dilectric::new(1.5)), 1.0, 1.0);
     /// ```
     pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>, u: f64, v: f64) -> Self {
         HitInfo { t, p, n, m, u, v }
@@ -92,9 +91,15 @@ impl ShapeList {
     /// use raytrs::color::Color;
     /// use raytrs::geometry::Vec3;
     /// use raytrs::material::Lambertian;
+    /// use raytrs::material::ColorTexture;
     ///
     /// let mut world = ShapeList::new();
-    /// let sphere = Sphere::new(Vec3::ones(), 10.0, Arc::new(Lambertian::new(Color::random())));
+    ///
+    /// let sphere = Sphere::new(
+    ///     Vec3::new(0.0, -1000.0, 0.0),
+    ///     1000.0,
+    ///     Arc::new(Lambertian::new(Box::new(ColorTexture::new(Color::random())))),
+    /// );
     ///
     /// world.push(Box::new(sphere));
     /// ```
