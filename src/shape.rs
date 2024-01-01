@@ -1,5 +1,6 @@
 pub(crate) mod sphere;
 
+use std::f64::consts::PI;
 use std::sync::Arc;
 
 use crate::geometry::Vec3;
@@ -23,6 +24,8 @@ pub struct HitInfo {
     pub p: Vec3,
     pub n: Vec3,
     pub m: Arc<dyn Material>,
+    pub u: f64,
+    pub v: f64,
 }
 
 impl HitInfo {
@@ -42,8 +45,8 @@ impl HitInfo {
     ///
     /// let info = HitInfo::new(1.0, Vec3::ones(), Vec3::ones(), Arc::new(Dilectric::new(1.5)));
     /// ```
-    pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>) -> Self {
-        HitInfo { t, p, n, m }
+    pub fn new(t: f64, p: Vec3, n: Vec3, m: Arc<dyn Material>, u: f64, v: f64) -> Self {
+        HitInfo { t, p, n, m, u, v }
     }
 }
 

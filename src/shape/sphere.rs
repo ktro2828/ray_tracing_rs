@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use std::f64::consts::PI;
+
 use crate::geometry::Vec3;
 use crate::interval::Interval;
 use crate::material::Material;
@@ -44,6 +46,35 @@ impl Sphere {
             radius,
             material,
         }
+    }
+
+    /// Returns u, v coords.
+    ///
+    /// $$
+    /// u = \frac{\phi}{2\pi}, \quad \frac{\theta}{2\pi}
+    /// $$
+    ///
+    /// where $\phi$ is azimuth and $\theta$ is ellipticity.
+    /// Then $x$, $y$, $z$ is as follows.
+    ///
+    /// $$
+    /// x = \cos(\phi)\cos(\theta), \quad
+    /// y = \cos(\phi)\sin(\theta), \quad
+    /// z = \sin(\theta)
+    /// $$
+    ///
+    /// Finally, the u, v coords is calculated as follows.
+    ///
+    /// $$
+    /// u = 1 - \frac{\phi + \pi}{2\pi}, \quad
+    /// v = \frac{\theta + \frac{\pi}{2}}{\pi}
+    /// $$
+    fn get_uv(&self, p: Vec3) -> (f64, f64) {
+        let phi = p.z().atan2(*p.x());
+        let theta = p.y().asin();
+        let u = 1.0 - (phi + PI) / (2.0 * PI);
+        let v = (theta + PI / 2.0) / PI;
+        (u, v)
     }
 }
 
@@ -91,11 +122,14 @@ impl Shape for Sphere {
             };
             if interval.min < t && t < interval.max {
                 let p = ray.at(t);
+                let (u, v) = self.get_uv(p);
                 return Some(HitInfo::new(
                     t,
                     p,
                     (p - self.center) / self.radius,
                     Arc::clone(&self.material),
+                    u,
+                    v,
                 ));
             }
         }
