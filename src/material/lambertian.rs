@@ -1,14 +1,14 @@
-use crate::color::Color;
 use crate::geometry::Vec3;
 use crate::material::Material;
 use crate::ray::Ray;
 use crate::shape::HitInfo;
 
 use super::scatter::ScatterInfo;
+use super::Texture;
 
 /// A struct to represent lambertian material.
 pub struct Lambertian {
-    pub albedo: Color,
+    pub albedo: Box<dyn Texture>,
 }
 
 impl Material for Lambertian {
@@ -20,13 +20,15 @@ impl Material for Lambertian {
         if scatter_dir.is_close(0.0) {
             scatter_dir = info.n;
         }
-        Some(ScatterInfo::new(Ray::new(info.p, scatter_dir), self.albedo))
+
+        let albedo = self.albedo.value(info.u, info.v, info.p);
+        Some(ScatterInfo::new(Ray::new(info.p, scatter_dir), albedo))
     }
 }
 
 impl Lambertian {
     /// Constructs `Lambertian`.
-    pub fn new(albedo: Color) -> Self {
+    pub fn new(albedo: Box<dyn Texture>) -> Self {
         Lambertian { albedo }
     }
 }

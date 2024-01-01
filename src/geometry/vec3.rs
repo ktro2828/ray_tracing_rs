@@ -209,6 +209,14 @@ impl Vec3 {
             && (self.e[1] - x).abs() < TOLERANCE
             && (self.e[2] - x).abs() < TOLERANCE;
     }
+
+    pub fn iter(&self) -> std::slice::Iter<'_, f64> {
+        self.e.iter()
+    }
+
+    pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, f64> {
+        self.e.iter_mut()
+    }
 }
 
 /// The addition operator `Vec3 + Vec3`.
