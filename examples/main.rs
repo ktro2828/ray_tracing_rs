@@ -81,6 +81,6 @@ fn main() {
     let img_basic = scene.render(RenderMode::BASIC);
     img_basic.save("basic.png").unwrap();
 
-    let img_aa = scene.render(RenderMode::AA);
+    let img_aa = scene.render(RenderMode::AA(10));
     img_aa.save("aa.png").unwrap();
 }

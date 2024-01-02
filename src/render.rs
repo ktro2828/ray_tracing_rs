@@ -10,9 +10,6 @@ use crate::{
     shape::{Shape, ShapeList},
 };
 
-// TODO: allow to set as parameter.
-const SAMPLES_PER_PIXEL: usize = 10;
-
 /// Represents the rendering mode.
 ///
 /// # Variants
@@ -20,7 +17,7 @@ const SAMPLES_PER_PIXEL: usize = 10;
 /// * `AA`      - Anti-Aliasing mode.
 pub enum RenderMode {
     BASIC,
-    AA,
+    AA(usize),
 }
 
 /// A trait to render scene.
@@ -35,13 +32,13 @@ pub trait Renderer {
     ///
     /// 1. Sampling colors at each pixel around it.
     /// 2. Meaning color.
-    fn render_aa(&self) -> RgbImage;
+    fn render_aa(&self, samples: usize) -> RgbImage;
 
     /// Render scene with specified rendering mode.
     fn render(&self, mode: RenderMode) -> RgbImage {
         match mode {
             RenderMode::BASIC => self.render_basic(),
-            RenderMode::AA => self.render_aa(),
+            RenderMode::AA(samples) => self.render_aa(samples),
         }
     }
 
@@ -115,23 +112,20 @@ impl Renderer for Scene {
         img
     }
 
-    fn render_aa(&self) -> RgbImage {
+    fn render_aa(&self, samples: usize) -> RgbImage {
         let mut img = RgbImage::new(self.width(), self.height());
         img.enumerate_pixels_mut()
             .collect::<Vec<(u32, u32, &mut Rgb<u8>)>>()
             .par_iter_mut()
             .for_each(|(x, y, pixel)| {
-                let mut px_color =
-                    (0..SAMPLES_PER_PIXEL)
-                        .into_iter()
-                        .fold(Color::BLACK, |acc, _| {
-                            let r = Vec3::rand();
-                            let u = (*x as f64 + r.x()) / (self.width() - 1) as f64;
-                            let v = (*y as f64 + r.y()) / (self.height() - 1) as f64;
-                            let ray = self.camera().ray(u, v);
-                            acc + self.trace(ray)
-                        });
-                px_color /= SAMPLES_PER_PIXEL as f64;
+                let mut px_color = (0..samples).into_iter().fold(Color::BLACK, |acc, _| {
+                    let r = Vec3::rand();
+                    let u = (*x as f64 + r.x()) / (self.width() - 1) as f64;
+                    let v = (*y as f64 + r.y()) / (self.height() - 1) as f64;
+                    let ray = self.camera().ray(u, v);
+                    acc + self.trace(ray)
+                });
+                px_color /= samples as f64;
                 let rgb = px_color.to_rgb();
                 pixel[0] = rgb[0];
                 pixel[1] = rgb[1];
